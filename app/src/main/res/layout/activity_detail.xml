@@ -145,6 +145,4 @@
             app:layout_constraintTop_toBottomOf="@id/sinopsis"/>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-
 </androidx.core.widget.NestedScrollView>

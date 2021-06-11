@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -80,7 +81,7 @@ public class MovAdapter extends RecyclerView.Adapter<MovAdapter.ViewHolder> {
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
-            ivPoster = itemView.findViewById(R.id.cv_poster);
+            ivPoster = itemView.findViewById(R.id.iv_poster);
             tvTitle = itemView.findViewById(R.id.tv_title);
             tvYear = itemView.findViewById(R.id.tv_year);
             cl_card = itemView.findViewById(R.id.cl_card);

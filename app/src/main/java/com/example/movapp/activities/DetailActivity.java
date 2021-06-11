@@ -1,5 +1,11 @@
 package com.example.movapp.activities;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
+import androidx.appcompat.app.ActionBar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Build;
@@ -9,56 +15,48 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RatingBar;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
-import androidx.appcompat.app.ActionBar;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.constraintlayout.widget.ConstraintLayout;
-
 import com.bumptech.glide.Glide;
 import com.example.movapp.R;
-import com.example.movapp.networks.MovieApiClient;
 import com.example.movapp.networks.MovieApiInterface;
+import com.example.movapp.networks.MovieApiClient;
 
 public class DetailActivity extends AppCompatActivity {
-    ImageView ivBackground;
-    ImageView ivPoster;
+    ImageView iv_detailImage;
+    ImageView iv_backDrop;
+    TextView tv_detailTitle;
+    TextView tv_detailOverview;
+    TextView tv_releaseDate;
+    TextView tv_overview;
 
-    TextView tvTitle;
-    TextView tvRating;
+    ConstraintLayout cl_detail;
 
-    TextView tvReleaseDate;
-    TextView tvOverview;
+    RatingBar rb_rating;
 
-    RatingBar ratingBar;
-    ConstraintLayout clDetail;
+    String id;
 
     SharedPreferences preferences;
     SharedPreferences.Editor editor;
-
-    String id;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail);
 
-        clDetail = findViewById(R.id.cl_detail);
-        clDetail.setVisibility(View.GONE);
+        cl_detail = findViewById(R.id.cl_detail);
+        cl_detail.setVisibility(View.GONE);
 
-        ivBackground = findViewById(R.id.iv_background);
-        ivPoster = findViewById(R.id.iv_poster);
+        iv_detailImage = findViewById(R.id.iv_poster);
+        iv_backDrop = findViewById(R.id.iv_background);
 
-        tvTitle = findViewById(R.id.tv_title);
-        tvRating = findViewById(R.id.tv_rating);
+        tv_detailTitle = findViewById(R.id.tv_title);
+        tv_detailOverview = findViewById(R.id.tv_overview);
+        tv_releaseDate = findViewById(R.id.tv_release_date);
 
-        tvReleaseDate = findViewById(R.id.tv_release_date);
-        tvOverview = findViewById(R.id.tv_overview);
-
-        ratingBar = findViewById(R.id.rating_bar);
+        tv_overview = findViewById(R.id.tv_overview);
 
         preferences = getSharedPreferences("FavoriteMovie", Context.MODE_PRIVATE);
 
@@ -67,19 +65,21 @@ public class DetailActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        rb_rating = findViewById(R.id.rating_bar);
+
         Bundle bundle = getIntent().getExtras();
-        String data[] = bundle.getStringArray("data");
+        String data [] = bundle.getStringArray("data");
 
         if (data[2] != null) {
             Glide.with(getApplicationContext())
                     .load("https://image.tmdb.org/t/p/w185" + data[2])
-                    .into(ivPoster);
+                    .into(iv_detailImage);
         }
 
         if (data[5] != null) {
             Glide.with(getApplicationContext())
                     .load("https://image.tmdb.org/t/p/w185" + data[5])
-                    .into(ivBackground);
+                    .into(iv_backDrop);
         }
 
         getSupportActionBar().setTitle(data[0]);
@@ -87,19 +87,18 @@ public class DetailActivity extends AppCompatActivity {
 
         MovieApiInterface apiInterface = MovieApiClient.getRetrofit().create(MovieApiInterface.class);
 
-        tvTitle.setText(data[0]);
-        tvOverview.setText(data[1]);
-        tvRating.setText(data[4]);
-        tvReleaseDate.setText(data[3]);
-        ratingBar.setRating(Float.parseFloat(data[4]) / 2);
+        tv_detailTitle.setText(data[0]);
+        tv_detailOverview.setText(data[1]);
+        rb_rating.setRating(Float.parseFloat(data[4]) / 2);
+        tv_releaseDate.setText(data[3]);
+        cl_detail.setVisibility(View.VISIBLE);
 
-        clDetail.setVisibility(View.VISIBLE);
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu){
+    public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.fav_menu, menu);
-        MenuItem menuItem = menu.findItem(R.id.nav_fav);
+        MenuItem menuItem = menu.findItem(R.id.nav_favorite);
         if (containsLike(id)) {
             menuItem.setIcon(R.drawable.ic_baseline_favorite_24);
         } else {
@@ -110,11 +109,11 @@ public class DetailActivity extends AppCompatActivity {
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
-    public boolean onOptionsItemSelected(@NonNull MenuItem item){
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         preferences = getSharedPreferences("FavoriteMovie", Context.MODE_PRIVATE);
         editor = preferences.edit();
         switch (item.getItemId()) {
-            case R.id.nav_fav :
+            case R.id.nav_favorite :
                 if (item.getIcon().getConstantState().equals(getDrawable(R.drawable.ic_baseline_favorite_border_24).getConstantState())) {
                     Toast t = Toast.makeText(getApplicationContext(), "Favorite", Toast.LENGTH_SHORT);
                     editor.putString("favorite", preferences.getString("favorite", "") + (preferences.getString("favorite", "").equals("") ? "" : " " ) + id);
@@ -138,7 +137,7 @@ public class DetailActivity extends AppCompatActivity {
                     item.setIcon(R.drawable.ic_baseline_favorite_border_24);
                 }
                 break;
-            case android.R.id.home :
+            case android.R.id.home:
                 finish();
                 break;
         }
@@ -150,6 +149,6 @@ public class DetailActivity extends AppCompatActivity {
         String [] all = preferences.getString("favorite", "").split(" ");
 
         return preferences.getString("favorite", "").contains(id);
-    }
 
+    }
 }

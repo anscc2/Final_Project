@@ -14,12 +14,12 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.movapp.adapter.MovAdapter;
-import com.example.movapp.Movie.MovResponse;
 import com.example.movapp.R;
+import com.example.movapp.adapter.MovAdapter;
 import com.example.movapp.networks.Const;
 import com.example.movapp.networks.MovieApiClient;
 import com.example.movapp.networks.MovieApiInterface;
+import com.example.movapp.Movie.MovResponse;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,8 +27,9 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 
+
 public class Favorite extends Fragment {
-    List<MovResponse> list = new ArrayList<>();
+    List<MovResponse> list = new ArrayList<MovResponse>();
     MovAdapter adapter;
 
     SharedPreferences preferences;
@@ -62,10 +63,10 @@ public class Favorite extends Fragment {
             rv_favorite.setVisibility(View.VISIBLE);
             tv_status.setVisibility(View.GONE);
         }
-        // Inflate the layout for this fragment
         return view;
     }
 
+    //    @Override
     public void onResume() {
         if (preferences.getString("favorite", "").equals("")) {
             tv_status.setVisibility(View.VISIBLE);
