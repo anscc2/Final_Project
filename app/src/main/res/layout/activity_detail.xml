@@ -28,22 +28,22 @@
             android:layout_height="175dp"
             android:src="@drawable/poster_noimage"
             android:layout_marginLeft="20dp"
+            android:layout_marginRight="260dp"
             android:layout_marginTop="150dp"
+            app:layout_constraintRight_toRightOf="parent"
             app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
             android:id="@+id/tv_title"
-            android:layout_width="wrap_content"
+            android:layout_width="220dp"
             android:layout_height="wrap_content"
             android:textColor="@color/white"
-            android:text="CAPTAIN MARVEL"
+            android:text="The Conjuring: The Devil Made Me Do It Mash"
             android:textStyle="bold"
+            android:layout_marginTop="10dp"
             android:layout_marginStart="16dp"
             android:layout_marginLeft="16dp"
-            android:layout_marginTop="16dp"
-            android:layout_marginEnd="16dp"
-            android:layout_marginRight="16dp"
             app:layout_constraintStart_toEndOf="@id/iv_poster"
             app:layout_constraintTop_toBottomOf="@id/iv_background"/>
 
