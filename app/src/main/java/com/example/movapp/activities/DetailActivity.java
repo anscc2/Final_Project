@@ -34,6 +34,7 @@ public class DetailActivity extends AppCompatActivity {
 
     ConstraintLayout cl_detail;
 
+    TextView tv_rating;
     RatingBar rb_rating;
 
     String id;
@@ -65,6 +66,7 @@ public class DetailActivity extends AppCompatActivity {
         ActionBar actionBar = getSupportActionBar();
         actionBar.setDisplayHomeAsUpEnabled(true);
 
+        tv_rating = findViewById(R.id.tv_rating);
         rb_rating = findViewById(R.id.rating_bar);
 
         Bundle bundle = getIntent().getExtras();
@@ -89,6 +91,7 @@ public class DetailActivity extends AppCompatActivity {
 
         tv_detailTitle.setText(data[0]);
         tv_detailOverview.setText(data[1]);
+        tv_rating.setText(data[4]);
         rb_rating.setRating(Float.parseFloat(data[4]) / 2);
         tv_releaseDate.setText(data[3]);
         cl_detail.setVisibility(View.VISIBLE);
